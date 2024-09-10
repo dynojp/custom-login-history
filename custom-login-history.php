@@ -2,6 +2,7 @@
 
 /*
 Plugin Name: Custom Login History
+Plugin URL: https://github.com/dynojp/custom-login-history
 Description: ユーザーのログイン履歴をカスタム投稿タイプとして保存するプラグイン
 Version: 0.1.0
 Author: 後藤隼人
