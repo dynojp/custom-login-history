@@ -12,4 +12,4 @@ WordPress でユーザーのログイン履歴をカスタム投稿タイプと�
 
 ## 関連ページ
 
-- [WordPress でログイン履歴機能を提供するプラグインまとめ - 実践 WordPress](https://wordpress.dyno.design/login-history/)
+- [WordPress でログイン履歴機能を提供するプラグインまとめ](https://wordpress.dyno.design/login-history/)
