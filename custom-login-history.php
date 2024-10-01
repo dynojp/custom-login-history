@@ -9,7 +9,11 @@ Author: 後藤隼人
 Author URI: https://dyno.design/
 */
 
+namespace CustomLoginHistory;
+
 defined( 'ABSPATH' ) || exit;
+
+const POST_TYPE = 'login_history';
 
 /**
  * カスタム投稿タイプ "login_history" を登録
@@ -22,7 +26,7 @@ add_action('init', function () {
     'label' => __('Login History', 'custom-login-history'),
     'supports' => ['title', 'editor', 'custom-fields'],
   ];
-  register_post_type('login_history', $args);
+  register_post_type(POST_TYPE, $args);
 });
 
 /**
@@ -30,14 +34,14 @@ add_action('init', function () {
  */
 add_action('wp_login', function ($user_login, $user) {
   $post_data = [
-    'post_type' => 'login_history',
+    'post_type' => POST_TYPE,
     'post_title' => sprintf(__('%s logged in', 'custom-login-history'), $user->user_login),
     'post_content' => sprintf(__('Date: %s', 'custom-login-history'), current_time('mysql')),
     'post_status' => 'publish',
     'meta_input' => [
       'user_id' => $user->ID,
       'user_login' => $user->user_login,
-      'login_ip' => $_SERVER['REMOTE_ADDR']
+      'login_ip' => $_SERVER['REMOTE_ADDR'],
     ],
   ];
 
@@ -47,7 +51,7 @@ add_action('wp_login', function ($user_login, $user) {
 /**
  * 管理画面のログイン履歴の一覧ページをカスタマイズ
  */
-add_filter('manage_login_history_posts_columns', function ($columns) {
+add_filter('manage_' . POST_TYPE . '_posts_columns', function ($columns) {
   $new_columns = [
     'cb' => $columns['cb'],
     'title' => __('Title', 'custom-login-history'),
@@ -61,7 +65,7 @@ add_filter('manage_login_history_posts_columns', function ($columns) {
 /**
  * 管理画面のログイン履歴の一覧ページの各レコードの値を返す
  */
-add_action('manage_login_history_posts_custom_column', function ($column_name, $post_id) {
+add_action('manage_' . POST_TYPE . '_posts_custom_column', function ($column_name, $post_id) {
   switch ($column_name) {
     case 'user_login':
       $user_login = get_post_meta($post_id, 'user_login', true);
