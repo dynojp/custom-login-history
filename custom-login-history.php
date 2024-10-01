@@ -42,6 +42,7 @@ add_action('wp_login', function ($user_login, $user) {
       'user_id' => $user->ID,
       'user_login' => $user->user_login,
       'login_ip' => $_SERVER['REMOTE_ADDR'],
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
     ],
   ];
 
@@ -58,6 +59,7 @@ add_filter('manage_' . POST_TYPE . '_posts_columns', function ($columns) {
     'user_login' => __('Username', 'custom-login-history'), 
     'login_ip' => __('IP Address', 'custom-login-history'),
     'login_date' => __('Login Date', 'custom-login-history'),
+    'user_agent' => __('User Agent', 'custom-login-history'),
   ];
   return $new_columns;
 });
@@ -68,15 +70,16 @@ add_filter('manage_' . POST_TYPE . '_posts_columns', function ($columns) {
 add_action('manage_' . POST_TYPE . '_posts_custom_column', function ($column_name, $post_id) {
   switch ($column_name) {
     case 'user_login':
-      $user_login = get_post_meta($post_id, 'user_login', true);
-      echo $user_login;
+      echo get_post_meta($post_id, 'user_login', true);
       break;
     case 'login_ip':
-      $login_ip = get_post_meta($post_id, 'login_ip', true);
-      echo $login_ip;  
+      echo get_post_meta($post_id, 'login_ip', true);
       break;
     case 'login_date':
       echo get_the_date('Y-m-d H:i', $post_id);
+      break;
+    case 'user_agent':
+      echo get_post_meta($post_id, 'user_agent', true);
       break;
   }
 }, 10, 2);
